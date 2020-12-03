@@ -129,14 +129,22 @@ LOGGING = {
             'class': 'logging.StreamHandler',
         },
         'file': {
-            'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': f'{BASE_DIR}/debug.log',
         },
+        'file_bot': {
+            'class': 'logging.FileHandler',
+            'filename': f'{BASE_DIR}/bot.log',
+        }
     },
     'loggers': {
         'django': {
             'handlers': ['console', 'file'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': True,
+        },
+        'bot': {
+            'handlers': ['console', 'file_bot'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
             'propagate': True,
         },

@@ -7,7 +7,7 @@ from django.views.generic import View
 from .models import UserBot
 from .utils import send_mess, check_if_user_admin, send_goals_to_users
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('bot')
 
 
 class BotWebhook(View):
@@ -41,14 +41,18 @@ class BotWebhook(View):
                 telegram_id=self.telegram_id
             )
             send_mess(self.telegram_id, 'Поздравляю, вы участвуете в игре!')
+            logger.info(f'{self.first_name} {self.username} join the game.')
         else:
             send_mess(self.telegram_id, 'Вы уже зарегистрированы, дождитесь других участников.')
+            logger.info(f'{self.first_name} {self.username} try join the game again.')
 
     def start_game(self):
         if check_if_user_admin(self.username):
             send_goals_to_users()
+            logger.info(f'{self.first_name} {self.username} start game.')
         else:
             send_mess(self.telegram_id, 'Только админ может начать игру.')
+            logger.info(f'{self.first_name} {self.username} try start game.')
 
     def party(self):
         users = UserBot.objects.all()
@@ -56,3 +60,4 @@ class BotWebhook(View):
         for user in users:
             party = party + f'{str(user)}\n'
         send_mess(self.telegram_id, party)
+        logger.info(f'{self.first_name} {self.username} use party command.')

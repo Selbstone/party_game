@@ -1,9 +1,12 @@
+import logging
 import random
 
 import requests
 from django.conf import settings
 
 from .models import UserBot
+
+logger = logging.getLogger('bot')
 
 
 def send_mess(chat, text):
@@ -27,4 +30,5 @@ def send_goals_to_users():
     pairs = shuffle_users(list(users))
     for pair in pairs:
         send_mess(pair[0].telegram_id, f'Ваша цель: {pair[1]}! Удачи :)')
+    logger.info(f'The game started. Count of participants {len(users)}')
     return True
