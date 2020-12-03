@@ -123,3 +123,4 @@ STATIC_URL = '/static/'
 
 TOKEN = os.getenv('TOKEN')
 BOT_URL = f'https://api.telegram.org/bot{TOKEN}/'
+ADMIN_USERNAME = os.getenv('ADMIN_USERNAME')

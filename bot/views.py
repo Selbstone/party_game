@@ -1,22 +1,10 @@
 import json
 
-import requests
-from django.conf import settings
 from django.http import HttpResponse
 from django.views.generic import View
 
 from .models import UserBot
-from .utils import shuffle_users
-
-
-def send_mess(chat, text):
-    params = {'chat_id': chat, 'text': text}
-    response = requests.post(settings.BOT_URL + 'sendMessage', data=params)
-    return response
-
-
-def check_if_user_admin(username):
-    return username == 'iselbst'
+from .utils import send_mess, check_if_user_admin, send_goals_to_users
 
 
 class BotWebhook(View):
@@ -41,11 +29,17 @@ class BotWebhook(View):
                 send_mess(telegram_id, 'Поздравляю, вы участвуете в игре!')
             else:
                 send_mess(telegram_id, 'Вы уже зарегистрированы, дождитесь других участников.')
-        elif text == '/start_game' and check_if_user_admin(username):
+        elif text == '/start_game':
+            if check_if_user_admin(username):
+                send_goals_to_users()
+            else:
+                send_mess(telegram_id, 'Только админ может начать игру.')
+        elif text == '/party':
             users = UserBot.objects.all()
-            pairs = shuffle_users(list(users))
-            for pair in pairs:
-                send_mess(pair[0].telegram_id, f'Твоя цель: {pair[1]}! Удачи :)')
+            party = ''
+            for user in users:
+                party = party + f'{str(user)}\n'
+            send_mess(telegram_id, party)
         else:
             send_mess(telegram_id, 'Пока что мой функционал очень ограничен :(')
 

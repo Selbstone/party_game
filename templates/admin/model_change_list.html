@@ -1,0 +1,8 @@
+{% extends 'admin/change_list.html' %}
+{% block object-tools %}
+  <form action="start_game/" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Начать игру" />
+  </form>
+    {{ block.super }}
+{% endblock %}
