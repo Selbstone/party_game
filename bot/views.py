@@ -28,6 +28,8 @@ class BotWebhook(View):
             self.start_game()
         elif text == '/party':
             self.party()
+        elif text == '/leave':
+            self.leave()
         else:
             send_mess(self.telegram_id, 'Пока что мой функционал очень ограничен :(')
 
@@ -61,3 +63,13 @@ class BotWebhook(View):
             party = party + f'{str(user)}\n'
         send_mess(self.telegram_id, party)
         logger.info(f'{self.first_name} {self.username} use party command.')
+
+    def leave(self):
+        user = UserBot.objects.filter(telegram_id=self.telegram_id)
+        if user:
+            user.delete()
+            send_mess(self.telegram_id, 'Вы покинули игру.')
+            logger.info(f'{self.first_name} {self.username} leave the game.')
+        else:
+            send_mess(self.telegram_id, 'Вы не участвуете в игре')
+            logger.info(f'{self.first_name} {self.username} try to leave the game.')
