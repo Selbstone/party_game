@@ -122,3 +122,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 TOKEN = os.getenv('TOKEN')
+BOT_URL = f'https://api.telegram.org/bot{TOKEN}/'
