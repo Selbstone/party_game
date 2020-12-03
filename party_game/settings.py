@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '4l4mh#37ncsil%z^b3l%0ib&fwiqdzy(-9tehs5si^^k450mko'
+SECRET_KEY = os.getenv('SECRET_KEY', '4l4mh#37ncsil%z^b3l%0ib&fwiqdzy(-9tehs5si^^k450mko')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', False)
 
 ALLOWED_HOSTS = ['*']
 
@@ -124,17 +124,26 @@ STATIC_URL = '/static/'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
         },
         'file': {
             'class': 'logging.FileHandler',
             'filename': f'{BASE_DIR}/debug.log',
+            'formatter': 'verbose',
         },
         'file_bot': {
             'class': 'logging.FileHandler',
             'filename': f'{BASE_DIR}/bot.log',
+            'formatter': 'verbose',
         }
     },
     'loggers': {
