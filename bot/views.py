@@ -1,10 +1,13 @@
 import json
+import logging
 
 from django.http import HttpResponse
 from django.views.generic import View
 
 from .models import UserBot
 from .utils import send_mess, check_if_user_admin, send_goals_to_users
+
+logger = logging.getLogger(__name__)
 
 
 class BotWebhook(View):
