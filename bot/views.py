@@ -61,7 +61,12 @@ class BotWebhook(View):
         party = ''
         for user in users:
             party = party + f'{str(user)}\n'
-        send_mess(self.telegram_id, party)
+
+        if party:
+            send_mess(self.telegram_id, party)
+        else:
+            send_mess(self.telegram_id, 'Еще нет участников.')
+
         logger.info(f'{self.first_name} {self.username} use party command.')
 
     def leave(self):
