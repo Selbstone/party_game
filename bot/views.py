@@ -59,8 +59,8 @@ class BotWebhook(View):
     def party(self):
         users = UserBot.objects.all()
         party = ''
-        for user in users:
-            party = party + f'{str(user)}\n'
+        for i, user in enumerate(users, 1):
+            party = party + f'{i}. {str(user)}\n'
 
         if party:
             send_mess(self.telegram_id, party)
