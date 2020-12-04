@@ -10,4 +10,4 @@ class UserBot(models.Model):
     telegram_id = models.CharField(max_length=32, unique=True)
 
     def __str__(self):
-        return f'{self.first_name} {self.username}'
+        return f'{self.first_name} @{self.username}'
