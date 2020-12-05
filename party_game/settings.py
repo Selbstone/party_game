@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', '4l4mh#37ncsil%z^b3l%0ib&fwiqdzy(-9tehs5si^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', False)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['limitless-harbor-82706.herokuapp.com','127.0.0.1']
 
 # Application definition
 
