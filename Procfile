@@ -1,0 +1,1 @@
+web: gunicorn party_game.wsgi --log-file -
