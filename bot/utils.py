@@ -61,4 +61,5 @@ def send_goals_to_users():
     for pair in pairs:
         send_mess(pair[0].telegram_id, f'Ваша цель: {pair[1]}! Удачи :) {emoji}')
     logger.info(f'The game started. Count of participants {len(users)}')
+    logger.info(f'Pairs: {pairs}')
     return True
