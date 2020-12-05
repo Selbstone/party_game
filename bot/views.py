@@ -8,6 +8,7 @@ from .models import UserBot
 from .utils import send_mess, check_if_user_admin, send_goals_to_users
 
 logger = logging.getLogger('bot')
+logger_django = logging.getLogger('django')
 
 
 class BotWebhook(View):
@@ -16,19 +17,24 @@ class BotWebhook(View):
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
 
-        user_chat = body['message']['chat']
-        text = body['message']['text']
-        self.first_name = user_chat['first_name']
-        self.username = user_chat['username']
-        self.telegram_id = user_chat['id']
+        logger_django.info(body)
 
-        if text == '/start':
+        user_info = body['message']['from']
+        try:
+            text = body['message']['text']
+            self.first_name = user_info['first_name']
+            self.username = user_info['username']
+            self.telegram_id = user_info['id']
+        except KeyError:
+            return HttpResponse(True)
+
+        if text == '/start' or text == '/start@party_game_vg_bot':
             self.start()
         elif text == '/start_game':
             self.start_game()
-        elif text == '/party':
+        elif text == '/party' or text == '/party@party_game_vg_bot':
             self.party()
-        elif text == '/leave':
+        elif text == '/leave' or text == '/leave@party_game_vg_bot':
             self.leave()
         else:
             send_mess(self.telegram_id, 'Пока что мой функционал очень ограничен :(')
